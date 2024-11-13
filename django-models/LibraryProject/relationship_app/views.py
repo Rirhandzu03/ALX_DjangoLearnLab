@@ -22,17 +22,6 @@ def librarian_view(request):
 def member_view(request):
     return render(request, 'member_page.html')  # Member page template
 
-# Function-based view
-def list_books(request):
-    books = Book.objects.all()  # Get all books
-    return render(request, 'relationship_app/list_books.html', {'books': books})
-
-# Class-based view
-class LibraryDetailView(DetailView):
-    model = Library
-    template_name = 'relationship_app/library_detail.html'
-    context_object_name = 'library'
-
 # Registration View
 def register(request):
     if request.method == 'POST':
@@ -67,3 +56,15 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return render(request, 'relationship_app/logout.html')
+
+# Function-based view
+def list_books(request):
+    books = Book.objects.all()  # Get all books
+    return render(request, 'relationship_app/list_books.html', {'books': books})
+
+# Class-based view
+class LibraryDetailView(DetailView):
+    model = Library
+    template_name = 'relationship_app/library_detail.html'
+    context_object_name = 'library'
+
