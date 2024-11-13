@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Book
+from .models import Book, Author
 from django.views.generic.detail import DetailView
 from .models import Library
 
