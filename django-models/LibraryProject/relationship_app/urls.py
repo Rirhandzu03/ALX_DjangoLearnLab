@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views  # Import views from the current app
-from .views import LibraryDetailView, list_books  # Explicitly import both views
+from . import views  
+from .views import list_books, LibraryDetailView 
 
 urlpatterns = [
     path('books/', list_books, name='list_books'),  # Function-based view for listing books
