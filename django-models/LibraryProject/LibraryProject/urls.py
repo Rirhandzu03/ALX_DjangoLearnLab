@@ -15,8 +15,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.shortcuts import redirect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('relationship_app/', include('relationship_app.urls')), # Incldue relationship_app
+     path('', lambda request: redirect('list_books')),  # Redirect to the list_books view
+
 ]
+
