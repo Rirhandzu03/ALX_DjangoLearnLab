@@ -5,6 +5,8 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.models import User
+from .models import UserProfile
 
 
 # Admin view, only accessible by users with the 'Admin' role
