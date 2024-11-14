@@ -12,17 +12,17 @@ from .models import UserProfile
 # Admin view, only accessible by users with the 'Admin' role
 @user_passes_test(lambda u: u.userprofile.role == 'Admin')
 def admin_view(request):
-    return render(request, 'admin_page.html')  # Admin page template
+    return render(request, 'admin_view.html')  # Admin page template
 
 # Librarian view, only accessible by users with the 'Librarian' role
 @user_passes_test(lambda u: u.userprofile.role == 'Librarian')
 def librarian_view(request):
-    return render(request, 'librarian_page.html')  # Librarian page template
+    return render(request, 'librarian_view.html')  # Librarian page template
 
 # Member view, only accessible by users with the 'Member' role
 @user_passes_test(lambda u: u.userprofile.role == 'Member')
 def member_view(request):
-    return render(request, 'member_page.html')  # Member page template
+    return render(request, 'member_view.html')  # Member page template
 
 # Registration View
 def register(request):
