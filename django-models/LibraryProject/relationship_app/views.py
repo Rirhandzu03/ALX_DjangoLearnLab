@@ -4,24 +4,25 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test, permissions_required
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import User
 
 
 # Applying permissions
 
-@permissions_required('relationship_app.can_add_book', raise_exception=True)
+@permission_required('relationship_app.can_add_book', raise_exception=True)
 def add_book(request):
     # Logic for adding a book
     pass
 
-@permissions_required('relationship-app.change_book', raise_exception=True)
+@permission_required('relationship-app.change_book', raise_exception=True)
 def edit_book(request, book_id):
     # Logic for editing a book
     book = get_object_or_404(Book, id=book_id)
     pass
 
-@permissions_required('relationship_app.can_delete_book', raise_exception=True)
+@permission_required('relationship_app.can_delete_book', raise_exception=True)
 def  delete_book(request, book_id):
     # Logic for deleting a book
     book = get_object_or_404(Book, id=book_id)
