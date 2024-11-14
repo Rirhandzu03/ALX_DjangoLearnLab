@@ -16,7 +16,7 @@ def add_book(request):
     # Logic for adding a book
     pass
 
-@permission_required('relationship-app.change_book', raise_exception=True)
+@permission_required('relationship_app.change_book', raise_exception=True)
 def edit_book(request, book_id):
     # Logic for editing a book
     book = get_object_or_404(Book, id=book_id)
