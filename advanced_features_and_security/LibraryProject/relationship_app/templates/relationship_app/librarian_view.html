@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Librarian Page</title>
+</head>
+<body>
+    <h1>Welcome to the Librarian Page</h1>
+    <p>Hello, {{ user.username }}! You have librarian access to this page.</p>
+
+    <!-- Librarian-specific content -->
+    <p>Here, you can manage books, check out library items, and assist members with their inquiries.</p>
+    
+    <a href="{% url 'home' %}">Return to Home</a>
+</body>
+</html>
