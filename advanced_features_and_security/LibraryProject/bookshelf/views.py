@@ -42,3 +42,18 @@ def search_books(request):
         form = ExampleForm()
 
     return render(request, 'bookshelf/book_list.html', {'books': books, 'form': form})
+
+# Testing the template with View
+def form_example(request):
+    if request.method == 'POST':
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            # Handle the valid form data
+            print("Form is valid!")
+            print(form.cleaned_data)
+        else:
+            print("Form is invalid!")
+    else:
+        form = ExampleForm()
+
+    return render(request, 'bookshelf/form_example.html', {'form': form})
