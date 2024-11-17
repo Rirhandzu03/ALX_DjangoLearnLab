@@ -29,3 +29,13 @@ def delete_book(request, book_id):
 
     return render(request, 'confirm_delete.html', {'book': book})
 
+# 
+def search_books(request):
+    if 'q' in request.GET:
+        user_input = request.GET['q']
+        # Using django ORM to query the database safely.
+        books = Book.objects.filter(title_icontains=user_input)
+        
+    else:
+        books = Book.objects.all()
+        return render(request, 'bookshelf/book_list.html',{'books': books}
