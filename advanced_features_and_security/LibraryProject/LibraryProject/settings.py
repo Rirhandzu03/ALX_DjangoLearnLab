@@ -28,6 +28,9 @@ DEBUG = False
 
 ALLOWED_HOSTS = []
 
+# Trust the X-Forwarded-Proto header
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # Configuring Django for HTTPS Support
 
 SECURE_SSL_REDIRECT = True
@@ -49,6 +52,9 @@ X_FRAME_OPTIONS = "DENY"
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
 SECURE_BROWSER_XSS_FILTER = True
+
+# Updating Deployment Configuration
+
 
 # Enable the XSS filter in the browser(secure_setting)
 SECURE_BROWSER_XSS_FILTER = True
