@@ -2,18 +2,21 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.filters import OrderingFilter, SearchFilter
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import Book
 from .serializers import BookSerializer
 from django.shortcuts import render
 
 # Create your views here.
-
 # View to list all books (read-only for unauthenticated users)
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]  # Allows read-only access to unauthenticated users
-
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['title', 'author', 'publication_year']
+    search_fields = ['title', 'auhtor']
 # View to retrieving a signle bood by id
 class BookDetailView(generics.ListAPIView):
     queryset = Book.objects.all()
@@ -40,3 +43,4 @@ class BookDeleteView(generics.DestroyAPIViewAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated]  # Restrict access to authenticated users only
+
