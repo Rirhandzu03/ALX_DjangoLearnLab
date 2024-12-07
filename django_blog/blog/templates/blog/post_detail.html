@@ -1,4 +1,3 @@
-<!-- blog/templates/blog/post_detail.html -->
 {% extends 'base_generic.html' %}
 
 {% block content %}
@@ -7,4 +6,32 @@
   <p>Written by {{ post.author.username }}</p>
   <a href="{% url 'post_update' post.pk %}">Edit Post</a>
   <a href="{% url 'post_delete' post.pk %}">Delete Post</a>
+
+  <h2>Comments</h2>
+  {% if comments %}
+      {% for comment in comments %}
+          <div class="comment">
+              <p><strong>{{ comment.author }}</strong> ({{ comment.created_at }}):</p>
+              <p>{{ comment.content }}</p>
+              {% if comment.author == user %}
+                  <a href="{% url 'edit_comment' comment.id %}">Edit</a>
+                  <a href="{% url 'delete_comment' comment.id %}">Delete</a>
+              {% endif %}
+          </div>
+      {% endfor %}
+  {% else %}
+      <p>No comments yet. Be the first to comment!</p>
+  {% endif %}
+
+  {% if user.is_authenticated %}
+      <form method="post">
+          {% csrf_token %}
+          {{ form.non_field_errors }}
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-primary">Post Comment</button>
+      </form>
+  {% else %}
+      <p>You must be logged in to comment.</p>
+  {% endif %}
 {% endblock %}
+
