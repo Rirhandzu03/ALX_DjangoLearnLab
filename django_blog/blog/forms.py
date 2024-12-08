@@ -1,7 +1,16 @@
 from django import forms
+from django.forms.widgets import TextInput
 from .models import Post, Comment,Tag
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+
+# Implementing TagWidget
+class TagWidget(forms.TextInput):
+    def __init__(self, attrs=None):
+        final_attrs = {'placeholder': 'Enter comma-separated tags'}
+        if attrs:
+            final_attrs.update(attrs)
+        super().__init__(attrs=final_attrs)
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
