@@ -8,7 +8,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.db.models import Q
 from django.contrib.auth import login
 from .forms import CustomUserCreationForm
-from .models import Post, Comment
+from .models import Post, Comment, Tag
 from .forms import CommentForm
 
 
@@ -124,7 +124,11 @@ def search_posts(request):
     ).distinct()
     return render(request, 'blog/search_results.html', {'query': query, 'results': results})
 
-
+# Creating the view for posts filtered by a tag
+def tag_posts(request, tag_name):
+    tag = Tag.objects.get(name=tag_name)
+    posts = tag.posts.all()  # Use the related_name 'posts' to filter posts by tag
+    return render(request, 'blog/tag_posts.html', {'tag': tag, 'posts': posts})
 
             
 
