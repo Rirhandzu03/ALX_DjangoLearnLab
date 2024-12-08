@@ -1,3 +1,4 @@
+from taggit.managers import TaggableManager
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -9,9 +10,19 @@ class Post(models.Model):
     content = models.TextField()
     published_date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-
+    #tags = models.ManyToManyField('Tag', related_name='posts', blank=True )
+    tags = TaggableManager()
+    
 def __str__(self):
     return self.title
+
+# Tag model
+class Tag(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
 
 # Creating a comment model
 class Comment(models.Model):
