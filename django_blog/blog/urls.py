@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import register, CustomLoginView, CustomLogoutView, profile
+from .views import register, CustomLoginView, CustomLogoutView, profile, PostByTagListView 
 from .views import (
     PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView,
     CommentCreateView, CommentUpdateView, CommentDeleteView
@@ -28,6 +28,7 @@ urlpatterns = [
     path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment_delete'),
 
     path('search/', views.search, name='search'),
+    path('tags/<slug:tag_slug>/', views.PostByTagListView.as_view(), name='tag_posts'),  # Correct slug URL pattern
     path('tags/<str:tag_name>/', views.tag_posts, name='tag_posts'),
     # other paths
 ]
