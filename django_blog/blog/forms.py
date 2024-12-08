@@ -1,8 +1,16 @@
 from django import forms
-from django.forms.widgets import TextInput
+from .widgets import TagWidget 
 from .models import Post, Comment,Tag
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+
+
+class CustomUserCreationForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
 
 # Implementing TagWidget
 class TagWidget(forms.TextInput):
@@ -12,23 +20,24 @@ class TagWidget(forms.TextInput):
             final_attrs.update(attrs)
         super().__init__(attrs=final_attrs)
 
-class CustomUserCreationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
-
-    class Meta:
-        model = User
-        fields = ['username', 'email', 'password1', 'password2']
-
 # Creating and updating of posts
 class PostForm(forms.ModelForm):
+    tags = forms.CharField(
+        widget=TagWidget(),
+        max_length=200,
+        required=False,
+        help_text="Comma-separated tags"
+    )
+    
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']
 
     def save(self, commit=True):
         instance = super().save(commit=False)
-        instance.author = self.user  
+        instance.author = self.user  # Ensure 'self.user' is passed or set correctly
         tag_names = self.cleaned_data['tags'].split(',')
+        
         if commit:
             instance.save()
             instance.tags.clear()  # Clear existing tags
