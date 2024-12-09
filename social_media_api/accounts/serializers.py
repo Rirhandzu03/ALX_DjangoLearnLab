@@ -26,6 +26,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         if password:
             user.set_password(password)  
         user.save()  
-        token, created = Token.objects.get_or_create(user=user)
+        token, created = Token.objects.create(user=user)
         validated_data['token'] = token.key
         return user
