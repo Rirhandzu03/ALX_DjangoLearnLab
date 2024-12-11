@@ -1,3 +1,6 @@
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions  import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework import viewsets, permissions
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
@@ -31,3 +34,21 @@ class CommentViewSet(viewsets.ModelViewSet):
            return [permissions.IsAuthenticated()]
         return [permissions.AllowAny()]
 
+# Feed generation
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def feed(request):
+    user = request.user
+    following = user.following.all()
+    posts = Post.objects.filter(author__in=following).order_by('-created_at')
+    serialized_posts = [
+        {
+        'id': Post.id,
+        'author': Post.author.username,
+        'content': Post.content,
+        'created_at': Post.created_at,
+
+        }
+      
+    ]
+    return Response(serialized_posts)
