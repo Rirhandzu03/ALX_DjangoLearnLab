@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notifications</title>
+</head>
+<body>
+    <h1>Your Notifications</h1>
+    <ul>
+        {% for notification in notifications %}
+            <li>
+                {{ notification.actor }} {{ notification.verb }}
+                {% if notification.target %}
+                    - {{ notification.target }}
+                {% endif %}
+                at {{ notification.timestamp }}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
