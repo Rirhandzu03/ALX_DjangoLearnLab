@@ -53,8 +53,7 @@ class FeedView(generics.GenericAPIView):
 
 @login_required
 def like_post(request, post_id):
-    
-    post = get_object_or_404(Post, pk=post_id)
+    post = generics.get_object_or_404(Post, pk=post_id)
 
     
     like, created = Like.objects.get_or_create(user=request.user, post=post)
@@ -74,6 +73,6 @@ def like_post(request, post_id):
 
 @login_required
 def unlike_post(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
+    post = generics.get_object_or_404(Post, pk=post_id)
     Like.objects.filter(user=request.user, post=post).delete()
     return JsonResponse({'message': 'Post unliked successfully.'}, status=200)
