@@ -53,39 +53,27 @@ class FeedView(generics.GenericAPIView):
 
 @login_required
 def like_post(request, post_id):
-    # Check if the post exists
-    post = get_object_or_404(Post, id=post_id)
+    
+    post = get_object_or_404(Post, pk=post_id)
 
-    # Check if the user has already liked this post
-    if Like.objects.filter(user=request.user, post=post).exists():
-        return JsonResponse({"message": "You have already liked this post."}, status=400)
+    
+    like, created = Like.objects.get_or_create(user=request.user, post=post)
 
-    # Create a like object
-    like = Like(user=request.user, post=post)
-    like.save()
+    if created:
+        # Create a notification for the post owner
+        Notification.objects.create(
+            recipient=post.user,  
+            actor=request.user,   
+            verb="liked your post",
+            target=post           
+        )
+        return JsonResponse({'message': 'Post liked successfully.'}, status=201)
 
-    # Create a notification
-    notification = Notification(
-        recipient=post.user,  
-        actor=request.user,  
-        verb="liked your post",
-        target_content_type=ContentType.objects.get_for_model(Post),
-        target_object_id=post.id,
-        target=post
-    )
-    notification.save()
+    return JsonResponse({'message': 'Post already liked.'}, status=400)
 
-    return JsonResponse({"message": "Post liked successfully."}, status=201)
 
 @login_required
 def unlike_post(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
-    like = Like.objects.filter(user=request.user, post=post).first()
-
-    if not like:
-        return JsonResponse({"message": "You have not liked this post."}, status=400)
-
-    # Delete the like object
-    like.delete()
-
-    return JsonResponse({"message": "Post unliked successfully."}, status=200)
+    post = get_object_or_404(Post, pk=post_id)
+    Like.objects.filter(user=request.user, post=post).delete()
+    return JsonResponse({'message': 'Post unliked successfully.'}, status=200)
