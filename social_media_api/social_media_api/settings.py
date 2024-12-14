@@ -27,6 +27,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Enable security middleware and settings.
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF =True
+SECURE_SSL_REDIRECT = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
 # Application definition
 
@@ -45,6 +52,11 @@ INSTALLED_APPS = [
 
 # Custom user model
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
+# Configure ALLOWED_HOSTS 
+ALLOWED_HOSTS = ['yourdomain.com', 'www.yourdomain.com', 'your-server-ip']
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
