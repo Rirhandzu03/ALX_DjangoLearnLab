@@ -51,28 +51,33 @@ class FeedView(generics.GenericAPIView):
         return Response(serializer.data)
     
 
-@login_required
-def like_post(request, post_id):
-    post = generics.get_object_or_404(Post, pk=post_id)
+class LikePostView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request, pk=None):
+        post = generics.get_object_or_404(Post, pk=pk)
+        
+        # Handle like logic
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
+        if created:
+            # Create a notification
+            Notification.objects.create(
+                recipient=post.user,
+                actor=request.user,
+                verb="liked your post",
+                target=post
+            )
+            return Response({'message': 'Post liked successfully.'}, status=201)
 
-    
-    like, created = Like.objects.get_or_create(user=request.user, post=post)
-
-    if created:
-        # Create a notification for the post owner
-        Notification.objects.create(
-            recipient=post.user,  
-            actor=request.user,   
-            verb="liked your post",
-            target=post           
-        )
-        return JsonResponse({'message': 'Post liked successfully.'}, status=201)
-
-    return JsonResponse({'message': 'Post already liked.'}, status=400)
+        return Response({'message': 'Post already liked.'}, status=400)
 
 
-@login_required
-def unlike_post(request, post_id):
-    post = generics.get_object_or_404(Post, pk=post_id)
-    Like.objects.filter(user=request.user, post=post).delete()
-    return JsonResponse({'message': 'Post unliked successfully.'}, status=200)
+class UnlikePostView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk=None):
+        # Use generics.get_object_or_404 to retrieve the post
+        post = generics.get_object_or_404(Post, pk=pk)
+        
+        # Handle unlike logic
+        Like.objects.filter(user=request.user, post=post).delete()
+        return Response({'message': 'Post unliked successfully.'}, status=200)
