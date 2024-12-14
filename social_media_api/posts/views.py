@@ -42,9 +42,8 @@ class CommentViewSet(viewsets.ModelViewSet):
 # Feed generation
 class FeedView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
-
     def get(self, request):
-        following_users = request.user.following.all()
+        following_users = request.user.following.all() 
         posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
 
         serializer = PostSerializer(posts, many=True)
